@@ -1,0 +1,50 @@
+{% extends "beamerhome.html" %}
+{% load tags %}
+{% block title %}{{ block.super }} - {{ item.title }}{% endblock %}
+{% block content %}
+
+
+
+        {% with item.application.poll_set.all as polls %}
+    {% if polls|length > 0 and polls.0.has_vote %}
+    <p><b>{% trans "Poll result" %}:</b></p>
+    {% for p in polls %}
+        {% if p.has_vote %}
+            {% if polls|length > 1 %}
+                {{forloop.counter}}. {% trans "Vote" %}:<br>
+            {% endif %}
+            {% for option in p.options %}
+                <img src="/static/images/icons/voting-yes.png" title="{% trans 'Yes' %}"> {{ option.yes }} <br>
+                <img src="/static/images/icons/voting-no.png" title="{% trans 'No' %}"> {{ option.no }} <br>
+                <img src="/static/images/icons/voting-abstention.png" title="{% trans 'Abstention' %}">  {{ option.undesided }}<br>
+                <img src="/static/images/icons/voting-invalid.png" title="{% trans 'Invalid' %}"> {{ p.votesinvalidf }}<br>
+                <div style="border-top: 1px solid; padding-top: 5px; margin: 5px 0; width: 10em;">
+                    <img src="/static/images/icons/voting-total.png" title="{% trans 'Votes cast' %}"> {{ p.votescastf }}
+                </div>
+            {% endfor %}
+            <br>
+        {% else %}
+            {% if poll|length  == 1 %}
+            <i>{% trans "No poll results available." %}</i>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <h1><b>{{ item.title }}</b></h1>
+    <h2>{{ item.application.title }}</h2>
+    <p><strong>{% trans "Submitter" %}:</strong> {{ item.application.submitter.profile }}</p>
+    <p><strong>{% trans "Status" %}:</strong> {{ item.application.get_status_display }}</p>
+
+        <div id="antragstexte">
+            <p><b>{% trans "Text" %}:</b></p>
+            <div>{{ item.application.public_version.text|linebreaks }}</div>
+        </div>
+    <p>
+    {% if item.application.public_version.reason %}
+        <br>
+        <div class="reason"><p><b>{% trans "Reason" %}:</b></p>
+        {{ item.application.public_version.reason|linebreaks }}</div>
+    {% endif %}
+    </p>
+{% endblock %}

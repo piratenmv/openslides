@@ -1,0 +1,10 @@
+{% extends "beamer.html" %}
+{% block title %}{{ block.super }} - {{ item.title }}{% endblock %}
+{% block content %}
+    {% if item.text %}
+        <p class="generaltitle">{{ item.title }}</p>
+        <p class="generaltext">{{ item.text|safe|linebreaks }}</p>
+    {% else %}
+        <div class="item_fullscreen">{{ item.title }}</div>
+    {% endif %}
+{% endblock %}

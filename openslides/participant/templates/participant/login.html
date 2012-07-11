@@ -1,0 +1,60 @@
+{% extends "participant/base_participant.html" %}
+
+{% block mainmenu %}
+    <ul>
+        <li class="selected"><a href="{% url user_login %}" title="">{%trans "Login" %}</a></li>
+    </ul>
+{% endblock %}
+
+{% block submenu %}
+{% endblock %}
+
+{% block content %}
+    <h1>{%trans "Login" %}</h1>
+
+    {% if form.errors %}
+        <div class="notification error">
+            <a class="close" href="#">
+            <img alt="close" title="{% trans 'Close this notification' %}" src="/static/images/icons/cross.png">
+            </a>
+            <em>{%trans "Your username and password didn't match. Please try again." %}</em>
+        </div>
+        <script>
+            $("div.notification").click(function () {
+                $(this).hide("fast");
+            });
+        </script>
+    {% endif %}
+    <form method="post" action="{% url user_login %}">
+        {% csrf_token %}
+        <table>
+        <tr>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+        </tr>
+        </table>
+        <p>
+        <button class="button" type="submit">
+            <span class="icon ok">{%trans 'Login' %}</span>
+        </button>
+        {% if os_enable_anonymous_login %}
+        <button class="button" id="anonymous_login">
+            <span class="icon guest">{%trans 'Continue as guest' %}</span>
+        </button>
+        {% endif %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        </p>
+    </form>
+    {% if os_enable_anonymous_login %}
+        <script>
+            $("#anonymous_login").live('click', function () {
+                window.location.href = '{% url item_overview %}';
+                return false;
+            });
+        </script>
+    {% endif %}
+{% endblock %}
