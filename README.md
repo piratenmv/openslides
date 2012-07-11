@@ -1,7 +1,7 @@
 OpenSlides
 ==========
 
-Dies ist eine für den Landesverband Mecklenburg-Vorpommern angepasste Version von OpenSlides (http://openslides.org). OpenSlides
+Dies ist eine für den Landesverband Mecklenburg-Vorpommern angepasste Version von OpenSlides (http://openslides.org).
 
 Anpassen
 --------
